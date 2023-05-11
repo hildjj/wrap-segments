@@ -1,0 +1,11 @@
+.c8rc
+.editorconfig
+.eslintrc.cjs
+.vscode/
+*.map
+coverage/
+docs/
+src/
+t.js
+test/
+tsconfig.json
