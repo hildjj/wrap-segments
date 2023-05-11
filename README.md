@@ -14,9 +14,13 @@ npm install wrap-segments
 import {SegmentWrapper} from '../lib/index.js'
 
 const w = new SegmentWrapper({
-  width: 12
+  width: 12,
+  indent: 2
 })
 console.log(w.wrap('Lorem Ipsum...'))
 ```
+
+Generated [API documentation](https://hildjj.github.io/wrap-segments/) is
+available.
 
 ---
