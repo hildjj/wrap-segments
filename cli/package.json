@@ -1,0 +1,37 @@
+{
+  "name": "wrap-segments-cli",
+  "version": "0.0.0",
+  "description": "Wrap text on Unicode word boundaries, at the command line",
+  "type": "module",
+  "bin": {
+    "wraps": "bin/wraps.js"
+  },
+  "keywords": [
+    "wordwrap",
+    "word",
+    "wrap",
+    "unicode",
+    "zalgo",
+    "segmenter",
+    "grapheme",
+    "cli",
+    "command line"
+  ],
+  "author": "Joe Hildebrand <joe-github@cursive.net>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hildjj/wrap-segments.git",
+    "directory": "cli"
+  },
+  "workspaces": [
+    ".."
+  ],
+  "dependencies": {
+    "commander": "10.0.1",
+    "wrap-segments": "*"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
