@@ -1,3 +1,5 @@
+import { findGrapheme } from './utils.js'
+
 /**
  * All options for wrapping.
  */
@@ -107,25 +109,6 @@ function noEscape(s: string): string {
   return s
 }
 
-function findGrapheme(
-  graphemes: Intl.SegmentData[],
-  offset: number, // In chars
-  start: number // In graphemes
-): number {
-  // This could be smarter by starting (offset - graphemes[start].index)
-  // graphemes closer.
-  const incr = Math.sign(offset - graphemes[start].index)
-  if (incr === 0) {
-    return start
-  }
-
-  for (let i = start; (i >= 0) && (i < graphemes.length); i += incr) {
-    if (graphemes[i].index === offset) {
-      return i
-    }
-  }
-  throw new Error(`Grapheme not found: ${offset}, ${start}, ${graphemes.length}, ${incr}`)
-}
 
 /**
  * Wrap words, where word boundaries are determined by Intl.Segmenter. Words
