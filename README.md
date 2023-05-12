@@ -1,6 +1,6 @@
 # wrap-segments
 
-Wrap lines at word boundaries, using [Intl.Segmenter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter).
+Wrap lines at Unicode word boundaries, using [Intl.Segmenter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter).
 
 Existing wrapping libraries tend to work very well on plain ASCII-7 text.
 However, the world has lots of other text that needs to be wrapped.

@@ -9,6 +9,8 @@
     "test": "c8 ava",
     "ts": "tsc",
     "ts:debug": "tsc --inlineSourceMap",
+    "precoverage": "npm run ts:debug",
+    "coverage": "c8 ava",
     "lint": "eslint . --ext js,ts",
     "doc": "typedoc src/index.ts",
     "build": "npm run ts && npm run lint && npm run doc"
