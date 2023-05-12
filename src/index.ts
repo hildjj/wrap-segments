@@ -99,6 +99,32 @@ function noEscape(s: string): string {
   return s
 }
 
+function findGrapheme(
+  graphemes: Intl.SegmentData[],
+  offset: number, // In chars
+  start: number // In graphemes
+): number {
+  // This could be smarter by starting (offset - graphemes[start].index)
+  // graphemes closer.
+  const incr = Math.sign(offset - graphemes[start].index)
+  if (incr === 0) {
+    return start
+  }
+
+  for (let i = start; (i >= 0) && (i < graphemes.length); i += incr) {
+    if (graphemes[i].index === offset) {
+      return i
+    }
+  }
+  throw new Error(`Grapheme not found: ${offset}, ${start}, ${graphemes.length}, ${incr}`)
+}
+
+/**
+ * Wrap words, where word boundaries are determined by Intl.Segmenter. Words
+ * are wrapped at a given width, where the units of width are
+ * {@link https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries | grapheme clusters},
+ * NOT characters, code points, or UTF-16 code units.
+ */
 export class SegmentWrapper {
 
   /** Noramlized options */
@@ -199,11 +225,14 @@ export class SegmentWrapper {
     const endWord = words[words.length - 1]
     const end = endWord.index + endWord.segment.length // In JS chars
     let offset = 0 // In JS chars
+    let offsetG = 0 // In graphemes
 
     while (offset < end) {
       // console.log({offset})
       res += this.#indent
-      const lastGrapheme = graphemes[offset + this.#width]
+
+      const lastGraphemeIndex = offsetG + this.#width
+      const lastGrapheme = graphemes[lastGraphemeIndex]
       if (!lastGrapheme) {
         res += text.slice(offset, end)
         res += this.#opts.newline
@@ -223,6 +252,8 @@ export class SegmentWrapper {
 
         if (lastInfo?.nextWord) {
           offset = lastInfo.nextWord.index
+          // Search for the index of the grapheme at the start of the next word.
+          offsetG = findGrapheme(graphemes, offset, lastGraphemeIndex)
         } else {
           // console.log('pen break')
           break
@@ -234,6 +265,7 @@ export class SegmentWrapper {
         if (lastInfo.empty) {
           if (lastInfo.nextWord) {
             offset = lastInfo.nextWord.index
+            offsetG = findGrapheme(graphemes, offset, lastGraphemeIndex)
           } else {
             if (!this.#opts.trim) {
               res += lastSeg.segment
@@ -243,6 +275,7 @@ export class SegmentWrapper {
           }
         } else {
           offset = lastSeg.index
+          offsetG = findGrapheme(graphemes, offset, lastGraphemeIndex)
         }
       }
     }

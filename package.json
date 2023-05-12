@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "type": "module",
   "scripts": {
-    "pretest": "npm run build",
+    "pretest": "npm run ts",
     "test": "c8 ava",
     "ts": "tsc",
     "ts:debug": "tsc --inlineSourceMap",
