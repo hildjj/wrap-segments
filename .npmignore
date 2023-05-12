@@ -9,3 +9,6 @@ src/
 t.js
 test/
 tsconfig.json
+cli
+.gitattributes
+.github/

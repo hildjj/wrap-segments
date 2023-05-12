@@ -31,11 +31,11 @@ to take all of the defaults.  The below example shows the default options:
 import {SegmentWrapper} from '../lib/index.js'
 
 const w = new SegmentWrapper({
-  cut: false, // Break words that are longer than width
   escape: identityTransform, // Escape inputs before proessing
   indent: '', // Can be a string or number
   indentChar: ' ', // If indent is a number, repeat this that many times
   indentEmpty: false, // If the input is empty, still indent?
+  indentFirst: true, // Indent the first line?
   isEmpty: /^\s*$/u, // Is a given text segment empty?  Only applies to non-wordLike segments.
   isNewline: /((?![\r\n\v\f\x85\u2028\u2029])\s)*[\r\n\v\f\x85\u2028\u2029]+(\s*)/gu, // Replace newlines matching this with newlineReplacement
   locale: DEFAULT_LOCALE, // Default is calculated by the JS runtime
@@ -50,6 +50,10 @@ const wrapped = w.wrap('Lorem Ipsum...')
 
 Generated [API documentation](https://hildjj.github.io/wrap-segments/) is
 available.
+
+## Command line
+
+A CLI is available as a [separate package](cli/README.md).
 
 ## Caveats
 

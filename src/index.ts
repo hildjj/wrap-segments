@@ -2,12 +2,12 @@
  * All options for wrapping.
  */
 export interface WrapperOptions {
-  /**
-   * If a word is longer than the allowed width, should it be chopped
-   * at the allowed width?
-   * @default false
-   */
-  cut: boolean;
+  // /**
+  //  * If a word is longer than the allowed width, should it be chopped
+  //  * at the allowed width?
+  //  * @default false
+  //  */
+  // cut: boolean;
 
   /**
    * If a string, indent every line with that string.  If a number,
@@ -27,6 +27,12 @@ export interface WrapperOptions {
    * @deafult false
    */
   indentEmpty: boolean;
+
+  /**
+   * Indent the first line?
+   * @default true
+   */
+  indentFirst: boolean;
 
   /**
    * Regular expression to test if a segment contains nothing but spaces.
@@ -78,7 +84,9 @@ export interface WrapperOptions {
   width: number;
 
   /**
-   * Function to escape the input string.
+   * Function to escape the input string.  The escaping is performed after
+   * line breaking, with the intent that in the final display, those escapes
+   * will be removed.
    *
    * @param raw The unescaped string
    * @returns An escaped version of the string
@@ -144,11 +152,12 @@ export class SegmentWrapper {
 
   public constructor(opts: Partial<WrapperOptions> = {}) {
     this.#opts = {
-      cut: false,
+      // cut: false,
       escape: noEscape,
       indent: '',
       indentChar: ' ',
       indentEmpty: false,
+      indentFirst: true,
       isEmpty: /^\s*$/u,
       isNewline: /((?![\r\n\v\f\x85\u2028\u2029])\s)*[\r\n\v\f\x85\u2028\u2029]+(\s*)/gu,
       locale: DEFAULT_LOCALE,
@@ -216,8 +225,6 @@ export class SegmentWrapper {
     if (this.#opts.trim) {
       words.splice(prevWordIndex + 1)
     }
-    // console.log(info)
-    let res = ''
 
     if (words.length === 0) {
       return this.#opts.indentEmpty ? this.#indent + this.#opts.newline : this.#opts.newline
@@ -226,10 +233,12 @@ export class SegmentWrapper {
     const end = endWord.index + endWord.segment.length // In JS chars
     let offset = 0 // In JS chars
     let offsetG = 0 // In graphemes
+    let res = ''
 
     while (offset < end) {
-      // console.log({offset})
-      res += this.#indent
+      if ((offset !== 0) || this.#opts.indentFirst) {
+        res += this.#indent
+      }
 
       const lastGraphemeIndex = offsetG + this.#width
       const lastGrapheme = graphemes[lastGraphemeIndex]
@@ -241,7 +250,6 @@ export class SegmentWrapper {
       const lastGraphemeStart = lastGrapheme.index
       const lastSeg = wordSeg.containing(lastGraphemeStart)
       const lastInfo = info.get(lastSeg.index)
-      // console.log({ lastGrapheme, lastSeg, offset, end, lastInfo })
 
       // Back up to the previous word.
       const penWord = lastInfo?.prevWord
@@ -255,7 +263,6 @@ export class SegmentWrapper {
           // Search for the index of the grapheme at the start of the next word.
           offsetG = findGrapheme(graphemes, offset, lastGraphemeIndex)
         } else {
-          // console.log('pen break')
           break
         }
       } else {
