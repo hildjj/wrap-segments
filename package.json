@@ -4,15 +4,12 @@
   "description": "Wrap text on Unicode word boundaries",
   "main": "lib/index.js",
   "type": "module",
+  "types": "types/index.d.ts",
   "scripts": {
-    "pretest": "npm run ts",
     "test": "c8 ava",
     "ts": "tsc",
-    "ts:debug": "tsc --inlineSourceMap",
-    "precoverage": "npm run ts:debug",
-    "coverage": "c8 ava",
-    "lint": "eslint . --ext js,ts",
-    "doc": "typedoc src/index.ts",
+    "lint": "eslint . --ext js",
+    "doc": "typedoc lib/index.js",
     "build": "npm run ts && npm run lint && npm run doc"
   },
   "keywords": [
@@ -28,9 +25,7 @@
   "license": "MIT",
   "repository": "hildjj/wrap-segments",
   "devDependencies": {
-    "@cto.af/eslint-config": "1.1.0",
-    "@typescript-eslint/eslint-plugin": "5.59.5",
-    "@typescript-eslint/parser": "5.59.5",
+    "@cto.af/eslint-config": "1.1.2",
     "ava": "5.2.0",
     "c8": "7.13.0",
     "eslint": "8.40.0",
