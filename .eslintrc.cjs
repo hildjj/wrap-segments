@@ -1,11 +1,9 @@
 module.exports = {
   root: true,
-  extends: ['@cto.af/eslint-config/typescript'],
+  extends: ['@cto.af/eslint-config/modules'],
   ignorePatterns: [
     'coverage/',
-    'docs/',
-    'lib/',
-    't.js'
+    'docs/'
   ],
   env: {
     es2020: true,
@@ -16,16 +14,14 @@ module.exports = {
     project: 'tsconfig.json',
   },
   rules: {
-    '@typescript-eslint/no-unused-vars': ['error', {
-      varsIgnorePattern: '_',
-    }],
+    'no-unused-vars': [
+      'error', {
+        args: 'none',
+        argsIgnorePattern: '^_',
+        caughtErrors: 'all',
+        caughtErrorsIgnorePattern: '^ignore',
+        varsIgnorePattern: '^_',
+      },
+    ],
   },
-  overrides: [
-    {
-      files: ['*.js'],
-      extends: [
-        '@cto.af/eslint-config/modules',
-      ],
-    },
-  ],
 }
